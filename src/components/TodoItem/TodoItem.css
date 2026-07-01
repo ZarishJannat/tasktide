@@ -1,0 +1,155 @@
+.todo-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: 14px 6px;
+  border-bottom: 1px solid var(--border-subtle);
+  animation: item-in var(--duration-base) var(--ease-out);
+}
+
+.todo-item:last-child {
+  border-bottom: none;
+}
+
+.todo-item__checkbox {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  margin-top: 2px;
+  border-radius: 7px;
+  border: 1.6px solid var(--color-teal-300);
+  background: transparent;
+  color: var(--text-on-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--duration-fast) var(--ease-out), transform var(--duration-fast);
+}
+
+.todo-item__checkbox:hover {
+  transform: scale(1.08);
+}
+
+.todo-item--completed .todo-item__checkbox {
+  background: var(--color-teal-500);
+  border-color: var(--color-teal-500);
+}
+
+.todo-item__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.todo-item__text {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  word-break: break-word;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.todo-item--completed .todo-item__text {
+  color: var(--text-muted);
+  text-decoration: line-through;
+  text-decoration-color: var(--text-muted);
+}
+
+.todo-item__edit-input {
+  width: 100%;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--text-primary);
+  background: var(--glass-surface);
+  border: 1px solid var(--color-teal-300);
+  border-radius: var(--radius-sm);
+  padding: 5px 8px;
+}
+
+.todo-item__edit-input:focus {
+  outline: none;
+}
+
+.todo-item__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-top: 7px;
+  flex-wrap: wrap;
+}
+
+.todo-item__due {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.todo-item__due--overdue {
+  color: var(--color-coral-600);
+  font-weight: 500;
+}
+
+.todo-item__actions {
+  display: flex;
+  gap: 2px;
+  flex-shrink: 0;
+  opacity: 0;
+  transform: translateX(4px);
+  transition: opacity var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out);
+}
+
+.todo-item:hover .todo-item__actions,
+.todo-item:focus-within .todo-item__actions {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.todo-item__action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-muted);
+  transition: background var(--duration-fast), color var(--duration-fast);
+}
+
+.todo-item__action-btn:hover {
+  background: rgba(15, 42, 46, 0.07);
+  color: var(--color-teal-500);
+}
+
+.todo-item__action-btn--danger:hover {
+  background: rgba(255, 107, 107, 0.12);
+  color: var(--color-coral-500);
+}
+
+.todo-item--removing {
+  animation: item-out 220ms var(--ease-in-out) forwards;
+}
+
+@keyframes item-out {
+  to {
+    opacity: 0;
+    transform: translateX(16px) scale(0.97);
+  }
+}
+
+@keyframes item-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (hover: none) {
+  .todo-item__actions {
+    opacity: 1;
+    transform: none;
+  }
+}

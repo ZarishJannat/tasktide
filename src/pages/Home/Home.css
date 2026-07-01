@@ -1,0 +1,201 @@
+.app-shell {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg) var(--space-md);
+}
+
+.app-card {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  background: var(--glass-surface);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+  padding: var(--space-lg);
+}
+
+/* signature: a slow ambient gradient glow that drifts behind the card, */
+/* like light moving on water. Kept subtle on purpose. */
+.app-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(
+    from var(--tide-angle, 0deg),
+    var(--color-teal-300),
+    transparent 25%,
+    transparent 70%,
+    var(--color-coral-500),
+    var(--color-teal-300)
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.35;
+  animation: tide-drift var(--duration-slow) linear infinite;
+  pointer-events: none;
+  z-index: -1;
+}
+
+@property --tide-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes tide-drift {
+  from {
+    --tide-angle: 0deg;
+  }
+  to {
+    --tide-angle: 360deg;
+  }
+}
+
+.app-card__intro {
+  margin-bottom: var(--space-lg);
+}
+
+.app-card__heading {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.app-card__subline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.app-card__dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.app-card__quote {
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+.app-card__controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.app-card__controls .search-bar {
+  flex: 1;
+  min-width: 160px;
+}
+
+.app-card__clear-btn {
+  display: block;
+  margin: 0 0 var(--space-xs) auto;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+  padding: 4px 2px;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.app-card__clear-btn:hover {
+  color: var(--color-coral-500);
+}
+
+.app-card__list {
+  min-height: 60px;
+}
+
+.app-card__celebration {
+  text-align: center;
+  margin-top: var(--space-md);
+  padding: var(--space-sm);
+  border-radius: var(--radius-sm);
+  background: rgba(95, 180, 136, 0.12);
+  color: var(--color-teal-700);
+  font-size: 0.86rem;
+  font-weight: 500;
+  animation: rise var(--duration-base) var(--ease-out);
+}
+
+[data-theme="dark"] .app-card__celebration {
+  color: var(--color-sage-500);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.app-card__skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-sm) 6px;
+}
+
+.skeleton-row {
+  height: 20px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(
+    90deg,
+    var(--border-subtle) 0%,
+    rgba(14, 131, 136, 0.14) 50%,
+    var(--border-subtle) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-sweep 1.2s ease-in-out infinite;
+}
+
+.skeleton-row:nth-child(2) {
+  width: 85%;
+}
+
+.skeleton-row:nth-child(3) {
+  width: 70%;
+}
+
+@keyframes skeleton-sweep {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-card {
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+  }
+
+  .app-card__heading {
+    font-size: 1.35rem;
+  }
+}

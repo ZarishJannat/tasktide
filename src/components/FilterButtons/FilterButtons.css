@@ -1,0 +1,32 @@
+.filter-buttons {
+  display: inline-flex;
+  background: var(--glass-surface);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  gap: 2px;
+}
+
+.filter-buttons__btn {
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  transition: background var(--duration-fast) var(--ease-out), color var(--duration-fast);
+}
+
+.filter-buttons__btn:hover {
+  color: var(--text-primary);
+}
+
+.filter-buttons__btn--active {
+  background: var(--color-teal-500);
+  color: var(--text-on-accent);
+}
+
+.filter-buttons__btn--active:hover {
+  color: var(--text-on-accent);
+}

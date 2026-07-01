@@ -1,0 +1,93 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(11, 30, 32, 0.45);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md);
+  z-index: 100;
+  animation: overlay-fade var(--duration-fast) var(--ease-out);
+}
+
+.modal {
+  width: 100%;
+  max-width: 360px;
+  background: var(--glass-surface-strong);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lift);
+  padding: var(--space-lg);
+  animation: modal-rise var(--duration-base) var(--ease-out);
+}
+
+.modal__title {
+  font-size: 1.1rem;
+  margin-bottom: var(--space-xs);
+}
+
+.modal__message {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.modal__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-xs);
+  margin-top: var(--space-lg);
+}
+
+.modal__btn {
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 9px 18px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: transform var(--duration-fast) var(--ease-out), opacity var(--duration-fast);
+}
+
+.modal__btn:hover {
+  transform: translateY(-1px);
+}
+
+.modal__btn--ghost {
+  background: transparent;
+  color: var(--text-secondary);
+}
+
+.modal__btn--ghost:hover {
+  background: rgba(15, 42, 46, 0.06);
+}
+
+.modal__btn--primary {
+  background: var(--color-teal-500);
+  color: var(--text-on-accent);
+}
+
+.modal__btn--danger {
+  background: var(--color-coral-500);
+  color: var(--text-on-accent);
+}
+
+@keyframes overlay-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
