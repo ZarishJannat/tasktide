@@ -3,9 +3,12 @@ import PriorityBadge from "../PriorityBadge/PriorityBadge";
 import { formatDueDate, isOverdue } from "../../utils/helpers";
 import "./TodoItem.css";
 
+const PRIORITIES = ["low", "medium", "high"];
+
 function TodoItem({ todo, isRemoving, onToggle, onEdit, onRequestDelete }) {
   const [isEditing, setIsEditing] = useState(false);
   const [draftText, setDraftText] = useState(todo.text);
+  const [draftPriority, setDraftPriority] = useState(todo.priority);
   const editInputRef = useRef(null);
 
   useEffect(() => {
@@ -14,14 +17,21 @@ function TodoItem({ todo, isRemoving, onToggle, onEdit, onRequestDelete }) {
 
   function startEditing() {
     setDraftText(todo.text);
+    setDraftPriority(todo.priority);
     setIsEditing(true);
   }
 
   function commitEdit() {
     const trimmed = draftText.trim();
-    if (trimmed && trimmed !== todo.text) {
-      onEdit(todo.id, { text: trimmed });
+    const updates = {};
+
+    if (trimmed && trimmed !== todo.text) updates.text = trimmed;
+    if (draftPriority !== todo.priority) updates.priority = draftPriority;
+
+    if (Object.keys(updates).length > 0) {
+      onEdit(todo.id, updates);
     }
+
     setIsEditing(false);
   }
 
@@ -32,8 +42,17 @@ function TodoItem({ todo, isRemoving, onToggle, onEdit, onRequestDelete }) {
     }
     if (event.key === "Escape") {
       setDraftText(todo.text);
+      setDraftPriority(todo.priority);
       setIsEditing(false);
     }
+  }
+
+  function handleEditGroupBlur(event) {
+    // only commit once focus leaves the whole edit group (text input + priority
+    // buttons) — otherwise clicking a priority button would blur the text input
+    // and close editing before the click registers
+    if (event.currentTarget.contains(event.relatedTarget)) return;
+    commitEdit();
   }
 
   const dueLabel = formatDueDate(todo.dueDate);
@@ -58,16 +77,33 @@ function TodoItem({ todo, isRemoving, onToggle, onEdit, onRequestDelete }) {
 
       <div className="todo-item__body">
         {isEditing ? (
-          <input
-            ref={editInputRef}
-            type="text"
-            className="todo-item__edit-input"
-            value={draftText}
-            maxLength={140}
-            onChange={(event) => setDraftText(event.target.value)}
-            onBlur={commitEdit}
-            onKeyDown={handleEditKeyDown}
-          />
+          <div className="todo-item__edit-group" onBlur={handleEditGroupBlur}>
+            <input
+              ref={editInputRef}
+              type="text"
+              className="todo-item__edit-input"
+              value={draftText}
+              maxLength={140}
+              onChange={(event) => setDraftText(event.target.value)}
+              onKeyDown={handleEditKeyDown}
+            />
+            <div className="todo-item__edit-priority" role="radiogroup" aria-label="Priority">
+              {PRIORITIES.map((level) => (
+                <button
+                  key={level}
+                  type="button"
+                  role="radio"
+                  aria-checked={draftPriority === level}
+                  className={`todo-item__priority-btn todo-item__priority-btn--${level} ${
+                    draftPriority === level ? "is-active" : ""
+                  }`}
+                  onClick={() => setDraftPriority(level)}
+                >
+                  {level}
+                </button>
+              ))}
+            </div>
+          </div>
         ) : (
           <p className="todo-item__text" onDoubleClick={startEditing}>
             {todo.text}

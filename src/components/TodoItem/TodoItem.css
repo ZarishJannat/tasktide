@@ -53,6 +53,47 @@
   text-decoration-color: var(--text-muted);
 }
 
+.todo-item__edit-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.todo-item__edit-priority {
+  display: inline-flex;
+  gap: 4px;
+}
+
+.todo-item__priority-btn {
+  border: 1px solid var(--glass-border);
+  background: var(--glass-surface);
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.todo-item__priority-btn.is-active.todo-item__priority-btn--low {
+  background: var(--color-sage-500);
+  border-color: var(--color-sage-500);
+  color: var(--text-on-accent);
+}
+
+.todo-item__priority-btn.is-active.todo-item__priority-btn--medium {
+  background: var(--color-amber-500);
+  border-color: var(--color-amber-500);
+  color: #3a2a05;
+}
+
+.todo-item__priority-btn.is-active.todo-item__priority-btn--high {
+  background: var(--color-coral-500);
+  border-color: var(--color-coral-500);
+  color: var(--text-on-accent);
+}
+
 .todo-item__edit-input {
   width: 100%;
   font-size: 0.95rem;
