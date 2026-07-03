@@ -18,23 +18,31 @@ import "./Home.css";
 
 function Home() {
   const { theme, toggleTheme } = useTheme();
-  const { todos, addTodo, editTodo, deleteTodo, toggleComplete, clearCompleted } = useTodos();
+  const {
+    todos,
+    isLoading,
+    loadError,
+    addTodo,
+    editTodo,
+    deleteTodo,
+    toggleComplete,
+    clearCompleted,
+  } = useTodos();
   const { toasts, showToast, dismissToast } = useToast();
 
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [pendingDelete, setPendingDelete] = useState(null);
   const [removingId, setRemovingId] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
 
   const [quote] = useState(getRandomQuote);
   const greeting = getGreeting();
   const todayLabel = getTodayLabel();
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 450);
-    return () => clearTimeout(timer);
-  }, []);
+    if (loadError) showToast({ message: loadError });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadError]);
 
   const completedCount = todos.filter((todo) => todo.completed).length;
   const totalCount = todos.length;

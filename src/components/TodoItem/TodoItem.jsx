@@ -9,6 +9,7 @@ function TodoItem({ todo, isRemoving, onToggle, onEdit, onRequestDelete }) {
   const [isEditing, setIsEditing] = useState(false);
   const [draftText, setDraftText] = useState(todo.text);
   const [draftPriority, setDraftPriority] = useState(todo.priority);
+  const [draftDueDate, setDraftDueDate] = useState(todo.dueDate || "");
   const editInputRef = useRef(null);
 
   useEffect(() => {
@@ -18,6 +19,7 @@ function TodoItem({ todo, isRemoving, onToggle, onEdit, onRequestDelete }) {
   function startEditing() {
     setDraftText(todo.text);
     setDraftPriority(todo.priority);
+    setDraftDueDate(todo.dueDate || "");
     setIsEditing(true);
   }
 
@@ -27,6 +29,7 @@ function TodoItem({ todo, isRemoving, onToggle, onEdit, onRequestDelete }) {
 
     if (trimmed && trimmed !== todo.text) updates.text = trimmed;
     if (draftPriority !== todo.priority) updates.priority = draftPriority;
+    if (draftDueDate !== (todo.dueDate || "")) updates.dueDate = draftDueDate || null;
 
     if (Object.keys(updates).length > 0) {
       onEdit(todo.id, updates);
@@ -43,6 +46,7 @@ function TodoItem({ todo, isRemoving, onToggle, onEdit, onRequestDelete }) {
     if (event.key === "Escape") {
       setDraftText(todo.text);
       setDraftPriority(todo.priority);
+      setDraftDueDate(todo.dueDate || "");
       setIsEditing(false);
     }
   }
@@ -87,21 +91,34 @@ function TodoItem({ todo, isRemoving, onToggle, onEdit, onRequestDelete }) {
               onChange={(event) => setDraftText(event.target.value)}
               onKeyDown={handleEditKeyDown}
             />
-            <div className="todo-item__edit-priority" role="radiogroup" aria-label="Priority">
-              {PRIORITIES.map((level) => (
-                <button
-                  key={level}
-                  type="button"
-                  role="radio"
-                  aria-checked={draftPriority === level}
-                  className={`todo-item__priority-btn todo-item__priority-btn--${level} ${
-                    draftPriority === level ? "is-active" : ""
-                  }`}
-                  onClick={() => setDraftPriority(level)}
-                >
-                  {level}
-                </button>
-              ))}
+            <div className="todo-item__edit-row">
+              <div className="todo-item__edit-priority" role="radiogroup" aria-label="Priority">
+                {PRIORITIES.map((level) => (
+                  <button
+                    key={level}
+                    type="button"
+                    role="radio"
+                    aria-checked={draftPriority === level}
+                    className={`todo-item__priority-btn todo-item__priority-btn--${level} ${
+                      draftPriority === level ? "is-active" : ""
+                    }`}
+                    onClick={() => setDraftPriority(level)}
+                  >
+                    {level}
+                  </button>
+                ))}
+              </div>
+
+              <label className="todo-item__edit-date-field">
+                <span className="visually-hidden">Due date</span>
+                <input
+                  type="date"
+                  className="todo-item__edit-date"
+                  value={draftDueDate}
+                  onChange={(event) => setDraftDueDate(event.target.value)}
+                  onKeyDown={handleEditKeyDown}
+                />
+              </label>
             </div>
           </div>
         ) : (

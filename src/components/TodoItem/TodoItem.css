@@ -59,9 +59,36 @@
   gap: 8px;
 }
 
+.todo-item__edit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 .todo-item__edit-priority {
   display: inline-flex;
   gap: 4px;
+}
+
+.todo-item__edit-date-field {
+  display: inline-flex;
+}
+
+.todo-item__edit-date {
+  border: 1px solid var(--glass-border);
+  background: var(--glass-surface);
+  border-radius: var(--radius-sm);
+  padding: 5px 8px;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+.todo-item__edit-date:focus {
+  outline: none;
+  border-color: var(--color-teal-300);
 }
 
 .todo-item__priority-btn {
